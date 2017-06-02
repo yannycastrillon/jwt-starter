@@ -7,6 +7,7 @@ const
   serverAuth = require('../config/serverAuth.js')
 
 // POST REQUEST TO CREATE THE TOKEN
+
 usersRouter.post('/login', (req,res) => {
   // lookup user by email
   // if there is no user, respond accordingly

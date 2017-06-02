@@ -2,6 +2,7 @@ const
   express = require('express'),
   app = express(),
   logger = require('morgan'),
+  cors = require('cors')
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   usersRoutes = require('./routes/users.js'),
@@ -12,9 +13,10 @@ const
 mongoose.connect(mongoUrl, (err) => {
   console.log(err || 'Connected to MongoDB.')
 })
-
+app.use(cors())
 // log all incoming requests to the console:
 app.use(logger('dev'))
+
 
 // interpret bodies of data that are included in requests:
 app.use(bodyParser.json()) // interpret json bodies
