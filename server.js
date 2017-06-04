@@ -13,7 +13,9 @@ const
 mongoose.connect(mongoUrl, (err) => {
   console.log(err || 'Connected to MongoDB.')
 })
+// Cross Origin Request availables
 app.use(cors())
+
 // log all incoming requests to the console:
 app.use(logger('dev'))
 

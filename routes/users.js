@@ -9,6 +9,7 @@ const
 // POST REQUEST TO CREATE THE TOKEN
 
 usersRouter.post('/login', (req,res) => {
+  console.log(req.body);
   // lookup user by email
   // if there is no user, respond accordingly
   // if there is a user, but password is wrong, respond accordingly
@@ -18,11 +19,11 @@ usersRouter.post('/login', (req,res) => {
     console.log(user);
     if (err) return res.status(500).json({success:false, message:"There was a server error"})
     if (!user) return res.status(404).json({success:false, message:"Not user was found with email: "+req.email})
-    if (user && !user.validPassword(req.body.password)) return res.status(400).json({succes:false, message:"Password is not correct"})
+    if (user && !user.validPassword(req.body.password)) return res.status(400).json({success:false, message:"Password is not correct"})
 
     const userData = user.toObject()
     delete userData.password
-    // Give all the entire user object as the payload to createToken method.
+    // Give the entire user object as the payload to createToken method.
     const token = serverAuth.createToken(userData);
     res.status(202).json({success:true, token: token, user: user});
   })

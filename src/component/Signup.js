@@ -7,6 +7,7 @@ class Signup extends Component {
     this.onSignup = this.onSignup.bind(this)
   }
 
+  // To signup a new user
   onSignup(event) {
     event.preventDefault();
     const url = 'http://localhost:3001/api/users';
@@ -15,14 +16,12 @@ class Signup extends Component {
       email:this.refs.email.value,
       password: this.refs.pass.value,
     };
-
+    // POST --- API call to create a new User.
     axios.post(url, data).then(response => {
       console.log(response);
     }).catch( err => {
-      console.log("err yanny");
       console.log(err);
     })
-    // headers.append("Content-Type", "application/json");
   }
 
 
