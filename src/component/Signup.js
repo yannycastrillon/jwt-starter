@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
+import clientAuth from '../clientAuth/clientAuth.js'
 import axios from 'axios';
 
 class Signup extends Component {
   constructor(props){
     super(props);
-    this.onSignup = this.onSignup.bind(this)
+    this._onSignup = this._onSignup.bind(this)
   }
 
   // To signup a new user
-  onSignup(event) {
+  _onSignup(event) {
     event.preventDefault();
-    const url = 'http://localhost:3001/api/users';
-    const data = {
-      name: this.refs.name.value,
+    const userInfo = {
+      name:this.refs.name.value,
       email:this.refs.email.value,
-      password: this.refs.pass.value,
-    };
-    // POST --- API call to create a new User.
-    axios.post(url, data).then(response => {
-      console.log(response);
-    }).catch( err => {
-      console.log(err);
-    })
+      password:this.refs.password.value,
+    }
+    clientAuth.signUp(userInfo).then( data => {
+      console.log(data);
+      this.props._handleSignup( () => ({
+        user:data.user,
+        msg:data.message,
+        loggedIn:true
+      }))
+    });
   }
 
 
@@ -29,10 +31,10 @@ class Signup extends Component {
     return(
       <div>
         <h1>Signup Account</h1>
-        <form onSubmit={this.onSignup}>
+        <form onSubmit={this._onSignup}>
           <input type="text" ref="name" placeholder="Name" />
           <input type="text" ref="email" placeholder="Email" />
-          <input type="password" ref="pass" placeholder="Password" />
+          <input type="password" ref="password" placeholder="Password" />
           <input type="password" placeholder="Confirmation password" />
           <button type="submit">Create</button>
         </form>

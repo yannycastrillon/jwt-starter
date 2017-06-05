@@ -15,9 +15,12 @@ class App extends Component {
       loading:true,
       loggedIn: false,
       currentUser:null,
+      flashMsg: null,
       view:'home'
     }
     this._setView = this._setView.bind(this);
+    this._handleSignup = this._handleSignup.bind(this);
+    this._handleLogout = this._handleLogout.bind(this);
   };
 
   // when component actual mounts you do your API calls
@@ -27,21 +30,7 @@ class App extends Component {
       currentUser: currentUser,
       loggedIn: !!currentUser
     })
-
-
-    // GET --- API Call to all users
-    const url = "http://localhost:3001/api/users";
-    axios.get(url).then( response => {
-      console.log(response);
-      this.setState({
-        users: response.data,
-        loading:false,
-      })
-    }).catch(err => {
-      console.log(err);
-    })
   };
-
 
   _setView(evt){
     evt.preventDefault();
@@ -52,6 +41,27 @@ class App extends Component {
     })
   };
 
+  _handleSignup(data) {
+    console.log("_handleSignup is executing");
+    this.setState({
+      currentUser:data.user,
+      flashMsg:data.msg,
+      loggedIn:data.loggedIn,
+      view:'home'
+    })
+  };
+
+  _handleLogout(evt) {
+    evt.preventDefault();
+    clientAuth.logOut().then( (data) => {
+      this.setState({
+        currentUser: null,
+        flashMsg: data.msg,
+        view: 'home',
+      })
+    });
+  }
+
 
   render() {
     return (
@@ -60,16 +70,18 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2> {this.state.login ? this.state.currentUser.name : 'Not Logged in'} </h2>
           <ul>
-            <button name="signup" onClick={this._setView}> Signup Component</button>
+            <button name="signup" onClick={this._setView} > Signup Component</button>
             <button name="login" onClick={this._setView}> Login Component</button>
+            <button onClick={this._handleLogout}> Logout</button>
           </ul>
           <h2>Welcome to React</h2>
         </div>
+        <div>{this.state.flashMsg}</div>
         <div>
           {{
               home: <h1>Home</h1>,
-              login: <Login />,
-              signup: <Signup />,
+              login: <Login _handleLoggeIn=""/>,
+              signup: <Signup _handleSignup={this._handleSignup}/>,
           }[this.state.view]}
         </div>
       </div>
