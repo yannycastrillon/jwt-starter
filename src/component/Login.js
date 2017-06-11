@@ -4,23 +4,23 @@ import clientAuth from '../clientAuth/clientAuth.js'
 
 axios.defaults.baseURL = 'http://localhost:3001'
 
-class Login extends Component{
+class Login extends Component {
   constructor(props){
     super(props);
-    this._handleLoggeIn = this._handleLoggeIn.bind(this);
-  }
+    this._handleLogin = this._handleLogin.bind(this);
+  };
 
-  _handleLoggeIn(event) {
-    event.preventDefault(); // prevents page to refresh
-
-    const credentials = {
+  _getCredentials(){
+    return ({
       email: this.refs.email.value,
       password: this.refs.password.value,
-    };
-    console.log("Handle LoggeIn");
-    clientAuth.logIn(credentials);
+    })
+  }
 
-  };
+  _handleLogin(evt) {
+    evt.preventDefault()
+    this.props.onLogin(this._getCredentials())
+  }
 
   render() {
     let loginStyle = {
@@ -32,14 +32,14 @@ class Login extends Component{
     return(
       <div style={loginStyle}>
         <h1>Login Component</h1>
-        <form onSubmit={this._handleLoggeIn}>
+        <form onSubmit={this._handleLogin}>
           <input type="text" ref="email" placeholder="email"></input>
           <input type="password" ref="password" placeholder="password"></input>
           <button type="submit">Login</button>
         </form>
       </div>
     )
-  }
+  };
 }
 
 export default Login;

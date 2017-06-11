@@ -26,11 +26,13 @@ const clientAuth = {
 
   // POST --- API call to create a new User.
   signUp: userInfo => {
-    return axios({
-      url:'api/users',
-      method:'POST',
-      data: userInfo,
-    })
+    console.log();
+
+    // return axios({
+    //   url:'api/users',
+    //   method:'POST',
+    //   data: userInfo,
+    // })
   },
 
   logIn: credentials => {
@@ -50,14 +52,14 @@ const clientAuth = {
         // Attaches the current JWT TOKEN to the Header
         axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
         // Decodes token return the User object with all of the data.
-        console.log("Decoded Token: "+jwtDecode(token));
-        return jwtDecode(token);
-      }else {
-        return false;
+        console.log(jwtDecode(token));
+        return {user: jwtDecode(token), loggedIn:true, msg:"You are loggedIn Successfuly"};
       }
+      else { return false }
     })
     .catch((err) => {
       console.log(err);
+      return {user: null, loggedIn:false, msg:"Problem with credentials"}
     })
   },
 

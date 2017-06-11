@@ -18,10 +18,10 @@ class Signup extends Component {
     }
     clientAuth.signUp(userInfo).then( data => {
       console.log(data);
-      this.props._handleSignup( () => ({
-        user:data.user,
-        msg:data.message,
-        loggedIn:true
+      this.props.onSignup( () => ({
+        user: data.user,
+        msg: data.message,
+        loggedIn: true
       }))
     });
   }
